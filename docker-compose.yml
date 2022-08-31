@@ -4,3 +4,5 @@ services:
     image: "scheemer:latest"
     build: "."
     command: "bundle console"
+    volumes:
+      - "./:/usr/src/app"

@@ -1,6 +1,8 @@
 require "spec_helper"
 
-RSpec.describe Params do
+require "ostruct"
+
+RSpec.describe Scheemer::Params do
   describe ".validate!" do
     context "when schema validation fails" do
       let(:klass) do
