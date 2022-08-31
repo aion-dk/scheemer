@@ -1,0 +1,6 @@
+version: "3"
+services:
+  scheemer:
+    image: "scheemer:latest"
+    build: "."
+    command: "bundle console"
