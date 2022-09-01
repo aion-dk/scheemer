@@ -24,11 +24,9 @@ RSpec.describe Scheemer::Params do
     context "with a defined set structure" do
       let(:klass) do
         Class.new(described_class) do
-          def self.schema
-            ::Dry::Schema.Params do
-              required(:root).hash do
-                required(:someValue).filled(:string)
-              end
+          schema do
+            required(:root).hash do
+              required(:someValue).filled(:string)
             end
           end
         end
