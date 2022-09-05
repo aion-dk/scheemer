@@ -6,7 +6,9 @@ RSpec.describe Scheemer::Params do
   describe ".validate!" do
     context "when schema validation fails" do
       let(:klass) do
-        Class.new(described_class) do
+        Class.new do
+          extend Scheemer::Params
+
           def self.schema
             ->(_) { OpenStruct.new(failure?: true) }
           end
@@ -23,7 +25,9 @@ RSpec.describe Scheemer::Params do
   describe ".new" do
     context "with a defined set structure" do
       let(:klass) do
-        Class.new(described_class) do
+        Class.new do
+          extend Scheemer::Params
+
           schema do
             required(:root).hash do
               required(:someValue).filled(:string)
