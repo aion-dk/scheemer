@@ -2,7 +2,7 @@ require "dry-schema"
 
 Dry::Schema.load_extensions(:hints)
 
-require_relative "./invalid_schema_error"
+require_relative "./errors"
 
 module Scheemer
   class Schema
@@ -11,7 +11,7 @@ module Scheemer
         @schema ||= Schema.new(&block)
       end
 
-      def validate!(params)
+      def validate_schema!(params)
         @schema ||
           (fail NotImplementedError, "Expected `schema { ... }` to have been specified")
 

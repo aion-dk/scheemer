@@ -1,28 +1,93 @@
 # Scheemer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/scheemer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Scheemer uses [Dry::Schema](https://github.com/dry-rb/dry-schema) to
+enable us to write consistent looking structural parameter validation
+and data accessing on our services.
 
-TODO: Delete this and the text above, and describe your gem
+## Usage
+
+### Using the Scheemer
+
+Scheemer::DSL ties together the parameters key translation and
+structural validation.
+
+```ruby
+klass = Class.new do
+  extend Scheemer::DSL
+
+  schema do
+    required(:root).hash do
+      required(:someValue).filled(:string)
+    end
+  end
+end
+
+record = klass.new({ root: { someValue: "testing" } })
+record.some_value # => "testing"
+```
+
+### Using Scheemer::Params
+
+Scheemer::Params handles the parameters key translation.
+
+```ruby
+klass = Class.new do
+  include Scheemer::Params
+
+  def initialize(...)
+    super
+
+    ...
+  end
+end
+
+record = klass.new({ someValue: "testing" })
+record.some_value # => "testing"
+```
+
+### Using Scheemer::Schema
+
+Scheemer::Schema::DSL handles the structural validation.
+
+```ruby
+klass = Class.new do
+  extend Scheemer::Schema::DSL
+
+  schema do
+    required(:name).filled(:string)
+  end
+
+  attr_reader :contents
+
+  def initialize(params)
+    @contents = self.class.validate_schema!(params)
+  end
+end
+
+klass.new({ name: 1 }) # => Error:'{:name=>['must be a string"]}"
+```
+
+## Development
+
+```bash
+$ docker-compose run scheemer /bin/bash
+$ docker-compose run scheemer rspec
+$ docker-compose build scheemer
+```
 
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add scheemer
+```bash
+$ bundle add av/scheemer
+```
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install scheemer
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```bash
+$ gem install av/scheemer
+```
 
 ## License
 
