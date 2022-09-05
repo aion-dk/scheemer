@@ -1,11 +1,13 @@
-class InvalidSchemaError < StandardError
-  def message
-    "#{title}: #{super}"
-  end
+module Scheemer
+  class InvalidSchemaError < Error
+    def message
+      "#{title}: #{super}"
+    end
 
-  private
+    private
 
-  def title
-    "The submitted request does not satisfy the following requirements"
+    def title
+      "The submitted request does not satisfy the following requirements"
+    end
   end
 end
