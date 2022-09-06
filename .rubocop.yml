@@ -1,13 +1,48 @@
+require:
+  - rubocop-rspec
+
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 3.1
+  NewCops: enable
+  Exclude:
+    - bin/**/*
+
+Style/ModuleFunction:
+  EnforcedStyle: extend_self
 
 Style/StringLiterals:
-  Enabled: true
   EnforcedStyle: double_quotes
 
-Style/StringLiteralsInInterpolation:
-  Enabled: true
-  EnforcedStyle: double_quotes
+Style/Documentation:
+  Enabled: false
 
-Layout/LineLength:
-  Max: 120
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Metrics/MethodLength:
+  CountAsOne: [hash, array, heredoc]
+
+RSpec/ExampleLength:
+  CountAsOne: [hash, array]
+
+RSpec/LeadingSubject:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 6
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 30
+
+RSpec/NestedGroups:
+  Max: 4
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Scheemer::Extensions::CaseModifier do
-  using Scheemer::Extensions::CaseModifier
+  using described_class
 
   it { expect(:"".camelcase).to eql :"" }
-  it { expect(:"asd".camelcase).to eql :"asd" }
-  it { expect(:"Asd".camelcase).to eql :"Asd" }
-  it { expect(:"asd_qwe".camelcase).to eql :"asdQwe" }
-  it { expect(:"asd_qwe_zxc".camelcase).to eql :"asdQweZxc" }
+  it { expect(:asd.camelcase).to be :asd }
+  it { expect(:Asd.camelcase).to be :Asd }
+  it { expect(:asd_qwe.camelcase).to be :asdQwe }
+  it { expect(:asd_qwe_zxc.camelcase).to be :asdQweZxc }
 end

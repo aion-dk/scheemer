@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Scheemer::Schema do
@@ -11,7 +13,7 @@ RSpec.describe Scheemer::Schema do
     context "with the required data" do
       it do
         expect { schema.validate!({ test: "something" }) }
-          .to_not raise_error
+          .not_to raise_error
       end
     end
 

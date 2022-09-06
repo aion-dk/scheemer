@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Scheemer::Params do
@@ -14,6 +16,7 @@ RSpec.describe Scheemer::Params do
       it "allows access to fields using underscored accessors" do
         expect(record.some_value).to eql("testing")
       end
+
       it "allows access to fields using camelcase accessors" do
         expect(record.someValue).to eql("testing")
       end

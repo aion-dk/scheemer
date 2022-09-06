@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Scheemer do
   it "has a version number" do
-    expect(Scheemer::VERSION).not_to be nil
+    expect(Scheemer::VERSION).not_to be_nil
   end
 
   describe "DSL" do
@@ -33,7 +35,7 @@ RSpec.describe Scheemer do
         end
       end
 
-      it { expect{ klass.new({}) }.to raise_error{ NotImplementedError } }
+      it { expect { klass.new({}) }.to raise_error(NotImplementedError) }
     end
   end
 end
