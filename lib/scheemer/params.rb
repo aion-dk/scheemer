@@ -20,7 +20,7 @@ module Scheemer
       @params.to_h.transform_keys { |key| key.to_s.underscore }
     end
 
-    def method_missing(name, *args, &)
+    def method_missing(name, *args, &block)
       key_name = name.to_sym.camelcase
       return @params.fetch(key_name) if @params.key?(key_name)
 

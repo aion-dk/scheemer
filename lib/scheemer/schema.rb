@@ -9,8 +9,8 @@ require_relative "./errors"
 module Scheemer
   class Schema
     module DSL
-      def schema(&)
-        @schema ||= Schema.new(&)
+      def schema(&block)
+        @schema ||= Schema.new(&block)
       end
 
       def validate_schema!(params)
@@ -21,9 +21,9 @@ module Scheemer
       end
     end
 
-    def initialize(&)
+    def initialize(&block)
       @definitions = ::Dry::Schema.Params do
-        instance_eval(&)
+        instance_eval(&block)
       end
     end
 
