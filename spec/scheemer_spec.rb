@@ -41,12 +41,11 @@ RSpec.describe Scheemer do
         end
       end
 
-      subject do
-        klass.new({ root: { someValue: "testing" } }, other_data: "it works!")
-      end
-
       it do
-        expect(subject.other_data).to eql "it works!"
+        expect_any_instance_of(klass)
+          .to receive(:validate!).with(other_data: "it works!")
+
+        klass.new({ root: { someValue: "testing" } }, other_data: "it works!")
       end
     end
 

@@ -10,10 +10,10 @@ module Scheemer
   module Params
     using Extensions::CaseModifier
 
-    def initialize(params)
+    def initialize(params, data = {})
       @params = params
 
-      validate! if respond_to?(:validate!)
+      validate!(data.to_h) if respond_to?(:validate!)
     end
 
     def to_h
