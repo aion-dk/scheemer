@@ -28,6 +28,28 @@ RSpec.describe Scheemer do
       end
     end
 
+    context "when passing in extra context data" do
+      let(:klass) do
+        Class.new do
+          extend Scheemer::DSL
+
+          schema do
+            required(:root).hash do
+              required(:someValue).filled(:string)
+            end
+          end
+        end
+      end
+
+      subject do
+        klass.new({ root: { someValue: "testing" } }, other_data: "it works!")
+      end
+
+      it do
+        expect(subject.other_data).to eql "it works!"
+      end
+    end
+
     context "without a defined schema" do
       let(:klass) do
         Class.new do
