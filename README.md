@@ -70,7 +70,7 @@ klass.new({ name: 1 }) # => Error:'{:name=>['must be a string"]}"
 ## Development
 
 ```bash
-$ docker-compose run scheemer /bin/bash
+$ docker-compose run scheemer /bin/sh
 $ docker-compose run scheemer rspec
 $ docker-compose build scheemer
 ```
@@ -80,13 +80,13 @@ $ docker-compose build scheemer
 Install the gem and add to the application's Gemfile by executing:
 
 ```bash
-$ bundle add av/scheemer
+$ bundle add aion-dk/scheemer
 ```
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
 ```bash
-$ gem install av/scheemer
+$ gem install aion-dk/scheemer
 ```
 
 ## License
