@@ -13,11 +13,24 @@ module Scheemer
         @schema ||= Schema.new(&block)
       end
 
+      def validate_schema(params)
+        check_schema_exists!
+
+        @schema.validate(params)
+      end
+
       def validate_schema!(params)
-        @schema ||
-          (raise NotImplementedError, "Expected `schema { ... }` to have been specified")
+        check_schema_exists!
 
         @schema.validate!(params)
+      end
+
+      private
+
+      def check_schema_exists!
+        return if @schema
+
+        raise NotImplementedError, "Expected `schema { ... }` to have been specified"
       end
     end
 
@@ -27,8 +40,12 @@ module Scheemer
       end
     end
 
+    def validate(params)
+      @definitions.call(params)
+    end
+
     def validate!(params)
-      @definitions.call(params).tap do |result|
+      validate(params).tap do |result|
         next if result.success?
 
         raise InvalidSchemaError, result.messages.to_h
