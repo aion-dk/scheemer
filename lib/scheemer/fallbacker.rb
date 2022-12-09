@@ -21,11 +21,13 @@ module Scheemer
     private
 
     def has_deep_key?(hash, keys)
-      return false if keys.one? || keys.empty?
+      if keys.one?
+        hash.key?(*keys)
+      else
+        parent_path = keys[0...-1]
 
-      parent_path = keys[0...-1]
-
-      !!hash.dig(*parent_path)&.key?(keys.last)
+        !!hash.dig(*parent_path)&.key?(keys.last)
+      end
     end
   end
 end
