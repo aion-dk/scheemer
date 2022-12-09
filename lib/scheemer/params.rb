@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "./fallbacker"
+
 require_relative "./extensions/string"
 
 module Scheemer
@@ -10,26 +12,42 @@ module Scheemer
   module Params
     using Extensions::CaseModifier
 
-    def initialize(params, data = {})
-      @params = params
+    module DSL
+      def self.extended(entity)
+        entity.include(InstanceMethods)
+      end
 
-      validate!(data.to_h) if respond_to?(:validate!)
+      def on_missing(path:, fallback_to:)
+        params_fallbacks[path.to_sym] = fallback_to
+      end
+
+      def params_fallbacks
+        @params_fallbacks ||= Hash.new
+      end
     end
 
-    def to_h
-      @params.to_h.transform_keys { |key| key.to_s.underscore }
-    end
+    module InstanceMethods
+      def initialize(params, data = {})
+        @params = Fallbacker.apply(params, self.class.params_fallbacks)
 
-    def method_missing(name, *args, &block)
-      key_name = name.to_sym.camelcase
-      return @params.fetch(key_name) if @params.key?(key_name)
+        validate!(data.to_h) if respond_to?(:validate!)
+      end
 
-      super
-    end
+      def to_h
+        @params.to_h.transform_keys { |key| key.to_s.underscore }
+      end
 
-    def respond_to_missing?(name, include_private = false)
-      key_name = name.camelcase
-      @params.key?(key_name) || super
+      def method_missing(name, *args, &block)
+        key_name = name.to_sym.camelcase
+        return @params.fetch(key_name) if @params.key?(key_name)
+
+        super
+      end
+
+      def respond_to_missing?(name, include_private = false)
+        key_name = name.camelcase
+        @params.key?(key_name) || super
+      end
     end
   end
 end

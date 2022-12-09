@@ -4,7 +4,7 @@ module Scheemer
   module DSL
     def self.extended(entity)
       entity.extend(Schema::DSL)
-      entity.include(Params)
+      entity.extend(Params::DSL)
       entity.include(InstanceMethods)
     end
   end

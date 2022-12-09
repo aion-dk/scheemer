@@ -20,10 +20,13 @@ klass = Class.new do
       required(:someValue).filled(:string)
     end
   end
+
+  on_missing path: "book.author.name", fallback_to: { "Stephen King" }
 end
 
 record = klass.new({ root: { someValue: "testing" } })
 record.some_value # => "testing"
+record.book.dig(:author, :name) # => "Stephen King"
 ```
 
 #### Optional Extra Data

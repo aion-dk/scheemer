@@ -7,7 +7,7 @@ RSpec.describe Scheemer::Params do
     context "with a defined set structure" do
       let(:klass) do
         Class.new do
-          include Scheemer::Params
+          extend Scheemer::Params::DSL
         end
       end
 
@@ -18,6 +18,25 @@ RSpec.describe Scheemer::Params do
       end
 
       it "allows access to fields using camelcase accessors" do
+        expect(record.someValue).to eql("testing")
+      end
+    end
+  end
+
+  describe ".on_missing" do
+    context "with a single level key" do
+      let(:klass) do
+        Class.new do
+          extend Scheemer::Params::DSL
+
+          on_missing path: "content", fallback_to: { fall: "back" }
+        end
+      end
+
+      subject(:record) { klass.new({ someValue: "testing" }) }
+
+      it "allows access to fields using underscored accessors" do
+        expect(record.content).to eql({ fall: "back" })
         expect(record.someValue).to eql("testing")
       end
     end
