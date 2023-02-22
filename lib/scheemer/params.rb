@@ -22,7 +22,7 @@ module Scheemer
       end
 
       def params_fallbacks
-        @params_fallbacks ||= Hash.new
+        @params_fallbacks ||= {}
       end
     end
 
@@ -37,7 +37,7 @@ module Scheemer
         @params.to_h.transform_keys { |key| key.to_s.underscore }
       end
 
-      def method_missing(name, *args, &block)
+      def method_missing(name, *args, &)
         key_name = name.to_sym.camelcase
         return @params.fetch(key_name) if @params.key?(key_name)
 

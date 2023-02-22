@@ -23,6 +23,9 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   CountAsOne: [hash, array, heredoc]
 
+RSpec/AnyInstance:
+  Enabled: false
+
 RSpec/ExampleLength:
   CountAsOne: [hash, array]
 

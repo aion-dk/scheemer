@@ -11,9 +11,9 @@ RSpec.describe Scheemer::Fallbacker do
       )
     end
 
-    it "should place the pair" do
+    it "places the pair" do
       expect(data.dig(:content, :fall, :back)).to eql("my-value")
-      expect(data.dig(:someValue)).to eql("testing")
+      expect(data[:someValue]).to eql("testing")
     end
   end
 
@@ -25,8 +25,8 @@ RSpec.describe Scheemer::Fallbacker do
       )
     end
 
-    it "shouldn't replace the existing value" do
-      expect(data.dig(:content,  :key)).to eql("old-key")
+    it "does not replace the existing value" do
+      expect(data.dig(:content, :key)).to eql("old-key")
     end
   end
 
@@ -38,8 +38,8 @@ RSpec.describe Scheemer::Fallbacker do
       )
     end
 
-    it "shouldn't replace the existing value" do
-      expect(data.dig(:content,  :key)).to eql("old-key")
+    it "does not replace the existing value" do
+      expect(data.dig(:content, :key)).to eql("old-key")
     end
   end
 end

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Request Parameter schema enforment for Assembly Voting systems"
   spec.homepage = "https://github.com/aion-dk/scheemer"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.7"
+  spec.required_ruby_version = ">= 3.1"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 

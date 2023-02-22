@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "./extensions/hash"
 
 module Scheemer
@@ -12,7 +14,7 @@ module Scheemer
       fallbacks.each do |(path, value)|
         keys = path.to_s.split(".").map(&:to_sym)
 
-        cloned_params.bury(*keys, value) unless has_deep_key?(params, keys)
+        cloned_params.bury(*keys, value) unless deep_key?(params, keys)
       end
 
       cloned_params
@@ -20,7 +22,7 @@ module Scheemer
 
     private
 
-    def has_deep_key?(hash, keys)
+    def deep_key?(hash, keys)
       if keys.one?
         hash.key?(*keys)
       else
