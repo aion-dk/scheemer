@@ -2,7 +2,7 @@
 
 require "dry-schema"
 
-Dry::Schema.load_extensions(:hints)
+Dry::Schema.load_extensions(:hints, :json_schema)
 
 require_relative "./errors"
 
@@ -23,6 +23,10 @@ module Scheemer
         check_schema_exists!
 
         @schema.validate!(params)
+      end
+
+      def json_schema
+        @schema.json_schema
       end
 
       private
@@ -50,6 +54,10 @@ module Scheemer
 
         raise InvalidSchemaError, result.messages.to_h
       end
+    end
+
+    def json_schema
+      @definitions.json_schema
     end
   end
 end
