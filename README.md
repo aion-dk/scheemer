@@ -63,7 +63,7 @@ Scheemer::Params handles the parameters key translation.
 
 ```ruby
 klass = Class.new do
-  include Scheemer::Params
+  extend Scheemer::Params::DSL
 
   def initialize(...)
     super
