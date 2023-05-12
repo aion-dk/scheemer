@@ -43,6 +43,20 @@ RSpec.describe Scheemer::Fallbacker do
     end
   end
 
+  context "when parent key exists and the key is new" do
+    subject(:data) do
+      described_class.apply(
+        { content: { key: "old-key" } },
+        { "content.new_key" => "new-value" }
+      )
+    end
+
+    it "does not replace the existing value" do
+      expect(data.dig(:content, :key)).to eql("old-key")
+      expect(data.dig(:content, :new_key)).to eql("new-value")
+    end
+  end
+
   context "when value is callable" do
     subject(:data) do
       described_class.apply(
