@@ -42,4 +42,18 @@ RSpec.describe Scheemer::Fallbacker do
       expect(data.dig(:content, :key)).to eql("old-key")
     end
   end
+
+  context "when value is callable" do
+    subject(:data) do
+      described_class.apply(
+        { content: { key: "old-key" } },
+        { "content.new_key" => lambda { "dynamic-value" } }
+      )
+    end
+
+    it "does not replace the existing value" do
+      expect(data.dig(:content, :key)).to eql("old-key")
+      expect(data.dig(:content, :new_key)).to eql("dynamic-value")
+    end
+  end
 end

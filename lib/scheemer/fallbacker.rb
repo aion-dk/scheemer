@@ -14,7 +14,13 @@ module Scheemer
       fallbacks.each do |(path, value)|
         keys = path.to_s.split(".").map(&:to_sym)
 
-        cloned_params.bury(*keys, value) unless deep_key?(params, keys)
+        next if deep_key?(params, keys)
+
+        if value.respond_to?(:call)
+          cloned_params.bury(*keys, value.call)
+        else
+          cloned_params.bury(*keys, value)
+        end
       end
 
       cloned_params
