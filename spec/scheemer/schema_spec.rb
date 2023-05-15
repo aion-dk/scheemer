@@ -24,4 +24,31 @@ RSpec.describe Scheemer::Schema do
       end
     end
   end
+
+  describe "#json_schema" do
+    context "when a key is using unsupported `format?`" do
+      subject(:schema) do
+        described_class.new do
+          required(:test).filled(format?: /asd/)
+        end
+      end
+
+      it "generates the schema without it" do
+        expect(schema.json_schema).to eql(
+          {
+            :$schema => "http://json-schema.org/draft-06/schema#",
+            :properties => {
+              test: {
+                not: {
+                  type: "null",
+                },
+              },
+            },
+            :required => ["test"],
+            :type => "object",
+          }
+        )
+      end
+    end
+  end
 end

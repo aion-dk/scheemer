@@ -62,7 +62,7 @@ module Scheemer
     end
 
     def json_schema
-      @definitions.json_schema
+      @definitions.json_schema(loose: true)
     end
   end
 end
