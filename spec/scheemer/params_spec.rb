@@ -11,20 +11,34 @@ RSpec.describe Scheemer::Params do
         end
       end
 
-      subject(:record) { klass.new({ someValue: "testing" }) }
+      context "when keys are symbols" do
+        subject(:record) { klass.new({ someValue: "testing" }) }
 
-      it "allows access to fields using underscored accessors" do
-        expect(record.some_value).to eql("testing")
+        it "allows access to fields using underscored accessors" do
+          expect(record.some_value).to eql("testing")
+        end
+
+        it "allows access to fields using camelcase accessors" do
+          expect(record.someValue).to eql("testing")
+        end
       end
 
-      it "allows access to fields using camelcase accessors" do
-        expect(record.someValue).to eql("testing")
+      context "when keys are strings" do
+        subject(:record) { klass.new({ "someValue" => "testing" }) }
+
+        it "allows access to fields using underscored accessors" do
+          expect(record.some_value).to eql("testing")
+        end
+
+        it "allows access to fields using camelcase accessors" do
+          expect(record.someValue).to eql("testing")
+        end
       end
     end
   end
 
   describe ".on_missing" do
-    context "with a single level key" do
+    context "with a shallow key" do
       let(:klass) do
         Class.new do
           extend Scheemer::Params::DSL
@@ -35,7 +49,7 @@ RSpec.describe Scheemer::Params do
 
       subject(:record) { klass.new({ someValue: "testing" }) }
 
-      it "allows access to fields using underscored accessors" do
+      it "fills in the missing missing" do
         expect(record.content).to eql({ fall: "back" })
         expect(record.someValue).to eql("testing")
       end

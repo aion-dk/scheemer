@@ -21,7 +21,9 @@ RSpec.describe Scheemer do
         end
       end
 
-      subject(:record) { klass.new({ root: { someValue: "testing" } }) }
+      subject(:record) do
+        klass.new({ root: { someValue: "testing" } })
+      end
 
       it "allows access to fields using underscored accessors" do
         expect(record.some_value).to eql("testing")
@@ -57,6 +59,42 @@ RSpec.describe Scheemer do
       end
 
       it { expect { klass.new({}) }.to raise_error(NotImplementedError) }
+    end
+
+    context "when the extra fields are specified" do
+      let(:klass) do
+        Class.new do
+          extend Scheemer::DSL
+
+          schema do
+            required(:item).hash do
+              required(:content).hash do
+                required(:name).filled(:string)
+                optional(:address).filled(:string)
+              end
+            end
+          end
+        end
+      end
+      let(:data) do
+        {
+          item: {
+            content: {
+              name: "John",
+              age: "9999",
+              address: "John's Street 69"
+            }
+          }
+        }
+      end
+
+      subject(:record) { klass.new(data) } 
+
+      it "it allows all fields through" do
+        expect(record.content.dig(:name)).to eql "John"
+        expect(record.content.dig(:age)).to eql "9999"
+        expect(record.content.dig(:address)).to eql "John's Street 69"
+      end
     end
   end
 end

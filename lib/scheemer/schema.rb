@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "dry-schema"
+require "json-schema"
 
 Dry::Schema.load_extensions(:hints, :json_schema)
 
@@ -40,6 +41,8 @@ module Scheemer
 
     def initialize(&)
       @definitions = ::Dry::Schema.Params do
+        config.validate_keys = false
+
         instance_eval(&)
       end
     end
@@ -49,15 +52,16 @@ module Scheemer
     end
 
     def validate!(params)
-      validate(params).tap do |result|
-        next if result.success?
+      valid_as_json = JSON::Validator.validate(json_schema, params)
+      valid_as_dry = validate(params)
 
-        raise InvalidSchemaError, result.messages.to_h
-      end
+      return params if valid_as_json && valid_as_dry.success?
+
+      raise InvalidSchemaError, valid_as_dry.messages.to_h
     end
 
     def json_schema
-      @definitions.json_schema
+      @definitions.json_schema(loose: true)
     end
   end
 end

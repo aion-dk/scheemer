@@ -3,6 +3,7 @@
 require_relative "./fallbacker"
 
 require_relative "./extensions/string"
+require "active_support/core_ext/hash"
 
 module Scheemer
   # This handles the conversion from the HTTP linguo (camelCase)
@@ -28,7 +29,10 @@ module Scheemer
 
     module InstanceMethods
       def initialize(params, data = {})
-        @params = Fallbacker.apply(params, self.class.params_fallbacks)
+        @params = Fallbacker.apply(
+          params.to_h.deep_symbolize_keys,
+          self.class.params_fallbacks
+        )
 
         validate!(data.to_h) if respond_to?(:validate!)
       end
