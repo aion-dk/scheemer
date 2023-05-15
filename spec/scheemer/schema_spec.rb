@@ -6,7 +6,7 @@ RSpec.describe Scheemer::Schema do
   describe ".validate!" do
     subject(:schema) do
       described_class.new do
-        required(:test)
+        required(:test).filled(:string)
       end
     end
 

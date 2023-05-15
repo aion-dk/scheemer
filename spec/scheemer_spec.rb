@@ -69,8 +69,8 @@ RSpec.describe Scheemer do
           schema do
             required(:item).hash do
               required(:content).hash do
-                required(:name)
-                optional(:address)
+                required(:name).filled(:string)
+                optional(:address).filled(:string)
               end
             end
           end
@@ -88,16 +88,12 @@ RSpec.describe Scheemer do
         }
       end
 
-      subject(:record) do
-        klass.new({ item: { content: { "testing" } } })
-      end
+      subject(:record) { klass.new(data) } 
 
       it "it allows all fields through" do
-        require "pry"
-        binding.pry
-        result = schema.validate(data)
-
-        expect(result.errors).to be_empty
+        expect(record.content.dig(:name)).to eql "John"
+        expect(record.content.dig(:age)).to eql "9999"
+        expect(record.content.dig(:address)).to eql "John's Street 69"
       end
     end
   end
