@@ -29,7 +29,7 @@ module Scheemer
     module InstanceMethods
       def initialize(params, data = {})
         @params = Fallbacker.apply(
-          params.to_h.transform_keys(&:to_sym), 
+          params.to_h.transform_keys(recursive: true, &:to_sym),
           self.class.params_fallbacks
         )
 
