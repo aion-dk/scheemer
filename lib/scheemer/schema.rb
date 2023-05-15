@@ -52,10 +52,13 @@ module Scheemer
     end
 
     def validate!(params)
-      return params if JSON::Validator.validate(json_schema, params)
+      valid_as_json = JSON::Validator.validate(json_schema, params)
+      valid_as_dry = validate(params)
+
+      return params if valid_as_json && valid_as_dry
 
       validate(params).tap do |result|
-        next if result.success?
+        next if result.success? 
 
         raise InvalidSchemaError, result.messages.to_h
       end
