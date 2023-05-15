@@ -11,14 +11,28 @@ RSpec.describe Scheemer::Params do
         end
       end
 
-      subject(:record) { klass.new({ someValue: "testing" }) }
+      context "when keys are symbols" do
+        subject(:record) { klass.new({ someValue: "testing" }) }
 
-      it "allows access to fields using underscored accessors" do
-        expect(record.some_value).to eql("testing")
+        it "allows access to fields using underscored accessors" do
+          expect(record.some_value).to eql("testing")
+        end
+
+        it "allows access to fields using camelcase accessors" do
+          expect(record.someValue).to eql("testing")
+        end
       end
 
-      it "allows access to fields using camelcase accessors" do
-        expect(record.someValue).to eql("testing")
+      context "when keys are strings" do
+        subject(:record) { klass.new({ "someValue" => "testing" }) }
+
+        it "allows access to fields using underscored accessors" do
+          expect(record.some_value).to eql("testing")
+        end
+
+        it "allows access to fields using camelcase accessors" do
+          expect(record.someValue).to eql("testing")
+        end
       end
     end
   end

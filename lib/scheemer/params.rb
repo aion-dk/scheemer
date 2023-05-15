@@ -28,7 +28,10 @@ module Scheemer
 
     module InstanceMethods
       def initialize(params, data = {})
-        @params = Fallbacker.apply(params, self.class.params_fallbacks)
+        @params = Fallbacker.apply(
+          params.to_h.transform_keys(&:to_sym), 
+          self.class.params_fallbacks
+        )
 
         validate!(data.to_h) if respond_to?(:validate!)
       end
